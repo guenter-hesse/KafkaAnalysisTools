@@ -1,0 +1,7 @@
+[all_nodes:children]
+kafka_cluster
+
+[kafka_cluster]
+bench05 ansible_host=192.168.xx.xx
+bench06 ansible_host=192.168.xx.xx
+bench07 ansible_host=192.168.xx.xx

@@ -1,0 +1,42 @@
+---
+
+# Set benchmark parameters
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: "Set Topic Prefix."
+      include: ../roles/benchmark/tasks/set_topic_prefix.yml home=~ prefix="{{ topic_prefix }}"
+      when: topic_prefix is defined
+    - name: "Set Benchmark Run"
+      include: ../roles/benchmark/tasks/set_benchmark_run.yml home=~ run="{{ benchmark_run }}"
+      when: benchmark_run is defined
+    - name: "Set Sending Interval"
+      include: ../roles/benchmark/tasks/set_sending_interval.yml home=~ interval="{{ sending_interval }}"
+      when: sending_interval is defined
+    - name: "Set Scale Factor"
+      include: ../roles/benchmark/tasks/set_scale_factor.yml home=~ sf="{{ scale_factor }}"
+      when: scale_factor is defined
+
+# Prepare Kafka topics
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Compile Project"
+      include: ../roles/benchmark/tasks/compile.yml home=~
+      when: compile_project != 'no'
+    - name: "Create Kafka Topics"
+      include: ../roles/kafka-topic/tasks/create.yml
+    - name: "Reassign Kafka Topics"
+      include: ../roles/kafka-topic/tasks/reassign.yml
+    - name: "Reassign Verify Kafka Topics"
+      include: ../roles/kafka-topic/tasks/reassignVerify.yml
+
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Start Datasender"
+      include: ../roles/benchmark/tasks/start_datasender.yml

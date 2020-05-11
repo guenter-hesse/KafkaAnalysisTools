@@ -1,0 +1,9 @@
+---
+
+compile_project: "YES"
+kafka_logs_path: "/home/kafka-logs/"
+relative_repository_path: "../../.."
+repository_root_directory: "{{ playbook_dir }}/../../.."
+benchmarker_home: "/home/benchmarker"
+benchmarker_repository_path: "Benchmarks/KafkaAnalysisTools"
+datasender_heap: 1
